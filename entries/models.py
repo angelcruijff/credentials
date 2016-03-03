@@ -1,9 +1,33 @@
 from django.db import models
 
 
-class Entry(models.Model):
+class EntryType(models.Model):
     name = models.CharField(max_length=100)
     template = models.TextField(blank=True)
+
+    class Meta:
+        verbose_name_plural = "Entries Type"
+
+    def __str__(self):
+        return self.name
+
+
+class Metadata(models.Model):
+    entry_type = models.ForeignKey(EntryType)
+    name = models.CharField(max_length=100)
+    key = models.CharField(max_length=50)
+    required = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name_plural = "Metadata"
+
+    def __str__(self):
+        return "{} - {}".format(self.name, self.key)
+
+
+class Entry(models.Model):
+    entry_type = models.ForeignKey(EntryType)
+    name = models.CharField(max_length=100, blank=False)
 
     class Meta:
         verbose_name_plural = "Entries"
@@ -11,14 +35,11 @@ class Entry(models.Model):
     def __str__(self):
         return self.name
 
-class Metadata(models.Model):
-    entry = models.ForeignKey(Entry)
-    name = models.CharField(max_length=100)
-    key = models.CharField(max_length=50)
-    required = models.BooleanField(default=True)
 
-    class Meta:
-        verbose_name_plural = "metadata"
+class MetadataValue(models.Model):
+    entry = models.ForeignKey(Entry)
+    metadata = models.ForeignKey(Metadata)
+    value = models.CharField(max_length=255)
 
     def __str__(self):
-        return "{} - {}".format(name, key)
+        return self.value
