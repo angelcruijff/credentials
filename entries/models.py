@@ -13,7 +13,7 @@ class EntryType(models.Model):
 
 
 class Metadata(models.Model):
-    entry_type = models.ForeignKey(EntryType)
+    entry_type = models.ForeignKey(EntryType, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     key = models.CharField(max_length=50)
     required = models.BooleanField(default=True)
@@ -26,7 +26,7 @@ class Metadata(models.Model):
 
 
 class Entry(models.Model):
-    entry_type = models.ForeignKey(EntryType)
+    entry_type = models.ForeignKey(EntryType, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, blank=False)
 
     class Meta:
@@ -37,8 +37,8 @@ class Entry(models.Model):
 
 
 class MetadataValue(models.Model):
-    entry = models.ForeignKey(Entry)
-    metadata = models.ForeignKey(Metadata)
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
+    metadata = models.ForeignKey(Metadata, on_delete=models.CASCADE)
     value = models.CharField(max_length=255)
 
     def __str__(self):

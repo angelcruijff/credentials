@@ -4,7 +4,8 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from .models import Entry, Metadata, MetadataValue, EntryType
 
-class Index(View):
+class IndexView(View):
+    template_name = "entries/index.html"
     """
     Cuando vamos a crear una nueva orden
     """
